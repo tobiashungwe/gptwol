@@ -186,6 +186,28 @@ def wol_send():
       window.history.back();
     </script>
     '''
+    
+@app.route('/shutdown', methods=['POST'])
+def shutdown_send():
+  mac_address = request.form['mac_address']
+  computer = next(c for c in computers if c['mac_address'] == mac_address)
+  ip_address = computer['ip_address']
+  if is_computer_awake(ip_address):
+    os.system(f'ssh root@{ip_address} "shutdown now"')
+    return '''
+    <script>
+      alert('Shutdown Command Send !');
+      window.history.back();
+    </script>
+    '''
+  else:
+    return '''
+    <script>
+      alert('Computer is Already Asleep');
+      window.history.back();
+    </script>
+    '''
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)

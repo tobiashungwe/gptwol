@@ -140,9 +140,14 @@ function clearSearchInput() {
           <input type="submit" value="Wake up">
         </form>
         {% if os.environ.get('DISABLE_ADD_DEL') != '1' %}
+            <form method="POST" action="/shutdown" style="display: inline-block;">
+              <input type="hidden" name="mac_address" value="{{ computer.mac_address }}">
+              <input type="submit" value="Shutdown" class="shutdown-button" onclick="return confirm('Are you sure you want to shutdown this computer?');">
+          </form>
           <form method="POST" action="/delete_computer" style="display: inline-block;">
             <input type="hidden" name="name" value="{{ computer.name }}">
             <input type="submit" value="Delete" style="background-color: #ff0000;" onclick="return confirm('Are you sure you want to delete this computer?');">
+            
           </form>
         {% endif %}
         </form>
